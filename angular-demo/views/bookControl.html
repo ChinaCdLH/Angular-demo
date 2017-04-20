@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图书管理系统</title>
+	<link rel="stylesheet" type="text/css" href="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css">
+	<script src= './angular.js'></script>
+	<style>
+		input{
+			outline: none;
+			padding-left: 5px;
+			height:33px;
+			border-radius:5px;
+			border:1px solid #aaa; 
+		}
+		button{
+			outline: none;	
+			height:33px;
+			border-radius: 5px;
+			border:1px solid #aaa;
+		}
+	</style>
+</head>
+<body>
+	<div class="container" ng-app = 'bookConrol'>
+	<div class="row clearfix" ng-controller = 'myController'>
+		<div class="col-md-12 column">
+			<h3 class="text-center text-info" ng-click = 'dataGet()'>
+				图书管理系统
+			</h3>
+			<input type="text" placeholder = '请输入{{type}}关键字' ng-model = 'searchVal'>
+			<div class="btn-group">
+				 <button class="btn btn-default">{{searchType}}</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="#" ng-click = 'findBookname()'>书名</a>
+					</li>
+					<li>
+						<a href="#" ng-click = 'findAuthor()'>作者</a>
+					</li>
+					<li>
+						<a href="#" ng-click = 'findPirce()'>价钱</a>
+					</li>
+				</ul>
+			</div>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>
+							序号
+						</th>
+						<th style = 'cursor:pointer;' ng-click ='changesort("Book")'>
+							书名
+						</th>
+						<th style = 'cursor:pointer;' ng-click = 'changesort("Author")'>
+							作者
+						</th>
+						<th style = 'cursor:pointer;' ng-click = 'changesort("Price")'>
+							价钱
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat='x in datas | filter:search(type) | orderBy:order:ck'>
+						<td>
+							{{$index +1}}
+						</td>
+						<td>
+							{{x.Book}}
+						</td>
+						<td>
+							{{x.Author}}
+						</td>
+						<td>
+							{{x.Price | currency:'￥'}}
+						</td>
+						<td>
+							<button style = 'background:#104E8B;color:#fff' ng-click='update($index)'>修改</button>
+							<button style = 'background:#EE6363;color:white' data-toggle="modal" data-target="#myModal" ng-click = 'setIndex($index)'>删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="text" placeholder = '编号' ng-model = 'idVal'>
+			<input type="text" placeholder = '书名' ng-model = 'bookVal'>
+			<input type="text" placeholder = '作者' ng-model = 'AuthorVal'>
+			<input type="number" placeholder = '价钱' ng-model = 'PriceVal'>
+			<button ng-click='addBook()'>增加</button>
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                <h4 class="modal-title" id="myModalLabel">警告！Warnning</h4>
+			            </div>
+			            <div class="modal-body">是否确认删除该书本？</div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click = 'deleteBook()'>确认删除</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="modal fade" id="modal-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <h3 class="modal-title">修改详情</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div>书名</div>
+                            <input ng-model="prod.productBook" value="{{prod.productBook}}">
+                            <div style='margin-top:20px;'>作者</div>
+                            <input ng-model="prod.productAuthor" value="{{prod.productAuthor}}">
+                            <div style='margin-top:20px;'>价钱</div>
+                            <input ng-model="prod.productPrice" value="{{prod.productPrice}}">
+                            <div style = 'margin-top:20px;'>编码</div>
+                            <input type="text" ng-model="prod.productId" value = '{{prod.productId}}'>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-default" data-dismiss="modal">取消修改</button>
+                            <button class="btn btn-success" data-dismiss="modal" ng-click="save()">保存修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+	</div>
+	<script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+	<script src = './book.js'></script>
+
+</body>
+</html>
